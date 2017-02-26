@@ -35,15 +35,6 @@ class Charity extends Component{
              logo: props.detail.assets,
          }
     }
-    // _onPressButton() {
-    //     var navigator = this.props.navigator;
-    //     navigator.push({
-    //         id: 1,
-    //         name: 'charitylist',
-    //         field: 'detail',
-    //         partID:this.props.detail.id,
-    //     });
-    // }
     Click(){
         console.log("Charity");
         // this.props.OnClickCharit();
@@ -142,19 +133,56 @@ class CharityList extends Component{
     render(){
         return(
             <View>
-            <InvertibleScrollView
-                horizontal={true}
-                inverted
-            >
-                {this.WholeCharites(this.props , this.ClickOnCharity)}
-            </InvertibleScrollView>
-            {/*<Button*/}
+                <View style={styles.HeaderCharityList}>
+                    <View style={styles.ViewListOfCharity}>
+                        <TouchableHighlight
+                            onPress={()=>this.props.onShowListPress(this.state.lis)}
+                        >
+                            <Text style={styles.TxtShowAll}>دیده همه</Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={styles.ViewCharity}>
+                        <Text style={styles.TxtCharities}>خیریه ها</Text>
+                    </View>
+                </View>
+                <InvertibleScrollView
+                    horizontal={true}
+                    inverted
+                >
+                    {this.WholeCharites(this.props , this.ClickOnCharity)}
+                </InvertibleScrollView>
+                {/*<Button*/}
                 {/*onPress={() => this.clickPress()}*/}
                 {/*title={"Click"}*/}
-            {/*/>*/}
+                {/*/>*/}
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    HeaderCharityList:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    ViewCharity:{
+        paddingTop:10,
+        paddingBottom:10,
+        paddingRight:10,
+   },
+   ViewListOfCharity:{
+        paddingLeft:10,
+        paddingBottom:8,
+        paddingTop:10,
+   },
+    TxtShowAll:{
+        fontSize:15,
+        color:'#6274f0'
+    },
+    TxtCharities:{
+        fontSize:15,
+        color:'#000000'
+    }
+});
 
 module.exports = CharityList;

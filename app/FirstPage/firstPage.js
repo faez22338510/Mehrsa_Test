@@ -27,6 +27,12 @@ export default class firstPage extends Component {
             orgId:id
         })
     }
+    onShowCharityListShowPress(listofCharity){
+        this.props.navigator.push({
+            id:2,
+            listofCharity:listofCharity
+        })
+    }
     render() {
         return (
             <ScrollView>
@@ -41,6 +47,7 @@ export default class firstPage extends Component {
                 >
                     <ListOfCharity
                         navigat = {this.props.navigator}
+                        onShowListPress = {(listofCharity) => this.onShowCharityListShowPress(listofCharity)}
                         onButtonPress= {charityid => this.onOrgPress(charityid)}
                     />
                 </View>
