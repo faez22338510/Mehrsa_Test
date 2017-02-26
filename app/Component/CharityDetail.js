@@ -5,12 +5,24 @@ import {
     Image,
     Button,
     Navigator,
-    StyleSheet
+    StyleSheet,
+    BackAndroid,
+    ScrollView
 } from 'react-native';
+var _navigator;
 
+BackAndroid.addEventListener('hardwareBackPress', () => {
+    if (_navigator.getCurrentRoutes().length === 1  ) {
+        return false;
+    }
+    _navigator.pop();
+    return true;
+});
 class CharityDetail extends Component{
     constructor(props){
         super(props);
+        _navigator  = this.props.navigator;
+        console.log(_navigator);
         this.state={
             id: props.charityid,
             detail:
@@ -50,24 +62,37 @@ class CharityDetail extends Component{
             .then((Detailjson) => {
                 if(Detailjson.meta.code == 200){
                     this.setState({
-                        detail: Detailjson.data,
+                        detail: Detailjson.data[0],
                     });
                 }
             })
     }
     render(){
         return(
-            <View>
-                <Text style={styles.txt}>{this.state.detail.name}</Text>
-            </View>
+            <ScrollView>
+                <View style={styles.inRowElement}>
+                    <View>
+                        <Image/>
+                    </View>
+                    <View>
+                        <Text>fda</Text>
+                        <Text>fa</Text>
+                    </View>
+                </View>
+                <Text style={styles.txt}>{this.props.id}</Text>
+                <Text>{this.state.detail.name}</Text>
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
     txt:{
-        backgroundColor: 'green'
+        backgroundColor: 'green',
     },
+    inRowElement:{
+        flexDirection: 'row',
+    }
 });
 
 module.exports = CharityDetail;
