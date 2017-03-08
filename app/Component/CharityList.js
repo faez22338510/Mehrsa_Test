@@ -20,7 +20,7 @@ import {
     Image,
     TouchableHighlight,
     Navigator,
-    Button
+    Button,
 } from 'react-native';
 import InvertibleScrollView from 'react-native-invertible-scroll-view';
 
@@ -29,11 +29,11 @@ class Charity extends Component{
         super(props);
         // var detail = _callListApi();
         // console.log(detail);
-         this.state={
-             id: props.detail.id,
-             name: props.detail.name,
-             logo: props.detail.assets,
-         }
+        this.state={
+            id: props.detail.id,
+            name: props.detail.name,
+            logo: props.detail.assets,
+        }
     }
     Click(){
         console.log("Charity");
@@ -42,7 +42,7 @@ class Charity extends Component{
         this.props.onPress(this.state.id);
     }
     render(){
-        var baseURL = 'http://mehrsaa.ir/api/';
+        var baseURL = 'http://api.mehrsaa.ir/v1/';
         return(
             <View
                 style={{
@@ -85,11 +85,10 @@ class CharityList extends Component{
         }
         var lis = [];
         console.log("Call CharityAPI");
-        fetch('http://mehrsaa.ir/api/list/charity')
+        fetch('http://api.mehrsaa.ir/v1/list/charity')
             .then((response) => response.json())
             .then((json) => {
                 if(json.meta.code == 200){
-                    console.log(json.data[0]);
                     for(var index in json.data){
                         lis.push(json.data[index])
                     }
@@ -169,12 +168,12 @@ const styles = StyleSheet.create({
         paddingTop:10,
         paddingBottom:10,
         paddingRight:10,
-   },
-   ViewListOfCharity:{
+    },
+    ViewListOfCharity:{
         paddingLeft:10,
         paddingBottom:8,
         paddingTop:10,
-   },
+    },
     TxtShowAll:{
         fontSize:15,
         color:'#6274f0'
