@@ -54,19 +54,20 @@ class CharityDetail extends Component{
         this._CallDetailApi();
     }
     _CallDetailApi(){
-        var url = "http://mehrsaa.aliinl.ir/api/list/field/"+this.props.id+"/charity";
+        var url = "http://api.mehrsaa.ir/v1/charity/"+this.props.id;
+        //alert(url);
         fetch(url)
             .then((response) => response.json())
             .then((Detailjson) => {
                 if(Detailjson.meta.code == 200){
                     this.setState({
-                        detail: Detailjson.data[0],
+                        detail: Detailjson.data,
                     });
                 }
             })
     }
     render(){
-        var Baseurl = 'http://mehrsaa.ir/api/';
+        var Baseurl = 'http://api.mehrsaa.ir/v1/';
         return(
             <ScrollView >
                 <View style={styles.wholepage}>
@@ -77,8 +78,8 @@ class CharityDetail extends Component{
                                 fontWeight:'500',
                                 fontSize:20,
                                 }}
-                            >{this.state.detail.name} </Text>
-                            <Text>{this.state.detail.finance_link}</Text>
+                            >{this.state.detail.sname} </Text>
+                            <Text>{this.state.detail.name}</Text>
                         </View>
                         <View style={styles.ImageofCharity}>
                             <Image source={{uri: Baseurl+this.state.detail.assets[0].asset_url}}
@@ -107,7 +108,7 @@ class CharityDetail extends Component{
                     <View style={{flex:1,alignItems: 'center'}}>
                         <Text
                             style={styles.textOfHeaderAbout}
-                        >درباره {this.state.detail.name}</Text>
+                        >درباره {this.state.detail.sname}</Text>
                     </View>
                 </View>
                 <View style={styles.BodyOfAbout}>
@@ -119,7 +120,7 @@ class CharityDetail extends Component{
                     <View style={{flex:1,alignItems: 'center'}}>
                         <Text
                             style={styles.textOfHeaderAbout}
-                        >خدمات {this.state.detail.name}</Text>
+                        >خدمات {this.state.detail.sname}</Text>
                     </View>
                 </View>
                 <View style={styles.BodyOfAbout}>
@@ -131,7 +132,7 @@ class CharityDetail extends Component{
                     <View style={{flex:1,alignItems: 'center'}}>
                         <Text
                             style={styles.textOfHeaderAbout}
-                        >کمک به {this.state.detail.name}</Text>
+                        >کمک به {this.state.detail.sname}</Text>
                     </View>
                 </View>
                 <View style={styles.ViewOfButton}>
