@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -7,6 +7,18 @@ import {
     Button,
     ScrollView
 } from 'react-native';
+
+const drawerStyles = {
+    drawer: {
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 0,
+    }
+}
+
+import Drawer from 'react-native-drawer';
+import MyControlPanel from '../Drawer/ControlPanel';
+
 var ListOfCharity = require('../Component/CharityList');
 var ListOfFieldCharity = require('../Component/FieldList');
 var LastNews = require('../Component/Swipper');
@@ -14,57 +26,114 @@ var ToolBar = require('../Component/ToolBar');
 var TestToolBar = require('../Component/TestToolbar');
 
 export default class firstPage extends Component {
-    // onOrgPress(page, charityID){
-    //     navigator.replace({
-    //         id: 1,
-    //         orgId:charityID
-    //     });
-    // }
-    onOrgPress(id){
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            drawerType: 'overlay',
+            openDrawerOffset: 100,
+            closedDrawerOffset: 0,
+            panOpenMask: 0.3,
+            panCloseMask: .3,
+            relativeDrag: false,
+            panThreshold: .25,
+            tweenHandlerOn: false,
+            tweenDuration: 100,
+            tweenEasing: 'linear',
+            disabled: false,
+            tweenHandlerPreset: null,
+            acceptDoubleTap: true,
+            acceptTap: false,
+            acceptPan: true,
+            tapToClose: false,
+            negotiatePan: true,
+            rightSide: true,
+        }
+    }
+
+    onOrgPress(id) {
         console.log("FirstPage");
         this.props.navigator.push({
-            id: 1,
-            orgId:id
+            id: 2,
+            orgId: id
         })
     }
-    onShowCharityListShowPress(listofCharity){
-        this.props.navigator.push({
-            id:2,
-            listofCharity:listofCharity
-        })
+
+    onShowCharityListShowPress(listofCharity) {
+
     }
+
+    openDrawer() {
+        this.drawer.open()
+    }
+
+    closeDraw() {
+        this.drawer.close();
+    }
+
     render() {
+        var controlPanel = <MyControlPanel closeDrawer={() => {
+         this.drawer.close();
+        }}/>
         return (
-            <ScrollView>
-                <View>
-                    <TestToolBar/>
-                </View>
-                <View>
-                    <LastNews/>
-                </View>
-                <View
-                    style={styles.rows}
-                >
-                    <ListOfCharity
-                        navigat = {this.props.navigator}
-                        onShowListPress = {(listofCharity) => this.onShowCharityListShowPress(listofCharity)}
-                        onButtonPress= {charityid => this.onOrgPress(charityid)}
-                    />
-                </View>
-                <View
-                    style={styles.rows}
-                >
-                    <ListOfFieldCharity/>
-                </View>
-                <Button
-                    onPress={()=>{
-                         this.props.navigator.push({
-                             id: 1,
-                         })
+            <Drawer
+                ref={c => this.drawer = c}
+                type={this.state.drawerType}
+                animation={this.state.animation}
+                openDrawerOffset={this.state.openDrawerOffset}
+                closedDrawerOffset={this.state.closedDrawerOffset}
+                panOpenMask={this.state.panOpenMask}
+                panCloseMask={this.state.panCloseMask}
+                relativeDrag={this.state.relativeDrag}
+                panThreshold={this.state.panThreshold}
+                content={controlPanel}
+                styles={drawerStyles}
+                disabled={this.state.disabled}
+                tweenDuration={this.state.tweenDuration}
+                tweenEasing={this.state.tweenEasing}
+                acceptDoubleTap={this.state.acceptDoubleTap}
+                acceptTap={this.state.acceptTap}
+                acceptPan={this.state.acceptPan}
+                tapToClose={this.state.tapToClose}
+                negotiatePan={this.state.negotiatePan}
+                side={"right"}
+            >
+                <ScrollView>
+                    <View>
+                        <TestToolBar
+                            opnenButton={()=>{
+                                this.openDrawer();
+                        }}
+                        />
+                    </View>
+                    <View>
+                        <LastNews/>
+                    </View>
+                    <View
+                        style={styles.rows}
+                    >
+                        <ListOfCharity
+                            navigat = {this.props.navigator}
+                            onShowListPress = {(listofCharity) => this.onShowCharityListShowPress(listofCharity)}
+                            onButtonPress= {charityid => this.onOrgPress(charityid)}
+                        />
+                    </View>
+                    <View
+                        style={styles.rows}
+                    >
+                        <ListOfFieldCharity/>
+                    </View>
+                    <Button
+                        onPress={()=>{
+                            this.openDrawer();
+                         {/*this.props.navigator.push({*/}
+                             {/*id: 1,*/}
+                         {/*})*/}
                     }}
-                    title="Next Page"
-                />
-            </ScrollView>
+                        title="Next Page"
+                    />
+                </ScrollView>
+            </Drawer>
         );
     }
 }
@@ -73,9 +142,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#e6e6e6',
     },
-    rows:{
-        paddingTop:10,
-    } ,
+    rows: {
+        paddingTop: 10,
+    },
     welcome: {
         fontSize: 20,
         textAlign: 'center',
@@ -86,6 +155,11 @@ const styles = StyleSheet.create({
         color: '#333333',
         marginBottom: 5,
     },
+    drawer: {
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 0,
+    }
 });
 
 module.exports = firstPage;
