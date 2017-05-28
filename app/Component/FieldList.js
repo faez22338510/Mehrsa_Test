@@ -25,7 +25,8 @@ class CharityFiled extends Component {
         alert(this.state.detail.name);
     }
     render(){
-        var baseURL = "http://mehrsaa.ir/api/";
+        var baseURL = "http://api.mehrsaa.ir/v1/";
+        var image_logo = baseURL+this.state.detail.assets[0].asset_url;
         return(
             <View
                 style={styles.Filed}
@@ -33,7 +34,7 @@ class CharityFiled extends Component {
                 <TouchableHighlight
                     onPress={this._onPressButton.bind(this)}
                 >
-                    <Image source={{uri: baseURL + this.state.detail.assets[0].asset_url}}
+                    <Image source={{uri: image_logo}}
                            style={{width: 120, height: 120}}/>
                 </TouchableHighlight>
                 <TouchableHighlight
@@ -55,16 +56,20 @@ class CharityFiledList extends Component{
         this.CallFeildApi();
     }
     CallFeildApi(){
-        var url = "http://mehrsaa.aliinl.ir/api/list/field";
+        var url = "http://api.mehrsaa.ir/v1/list/field";
         var lis = [];
-        console.log("Call FieldAPI");
-        fetch(url)
+        console.log(url);
+        fetch(url,{
+            method:'GET'
+        })
             .then((response) => response.json())
             .then((json) =>{
+                console.log("get");
                 if(json.meta.code == 200){
                     for(var index in json.data){
                         lis.push(json.data[index])
                     }
+                    console.log(lis);
                     this.setState({
                         list: lis,
                     })
@@ -76,12 +81,15 @@ class CharityFiledList extends Component{
     }
     WholeFiled(){
         return this.state.list.map((filed) => {
-            return(
-                <CharityFiled
-                    key = {filed.id}
-                    detail = {filed}
-                />
-            )
+            console.log(filed);
+            if(filed.id != 30) {
+                return (
+                    <CharityFiled
+                        key={filed.id}
+                        detail={filed}
+                    />
+                )
+            }
         })
     }
     render(){
