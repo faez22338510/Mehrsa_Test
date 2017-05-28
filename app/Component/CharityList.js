@@ -10,6 +10,7 @@
  * EndPoint: /list/charity
  * @flow
  */
+
 import React ,{ Component } from 'react';
 import {
     AppRegistry,
@@ -31,7 +32,7 @@ class Charity extends Component{
         // console.log(detail);
         this.state={
             id: props.detail.id,
-            name: props.detail.name,
+            name: props.detail.sname,
             logo: props.detail.assets,
         }
     }
@@ -59,13 +60,12 @@ class Charity extends Component{
                 <TouchableHighlight onPress={() => this.props.OnClick(1, this.state.id)}>
                     <Text
                         style={{alignItems: 'center'}}
-                    >{this.props.detail.name}</Text>
+                    >{this.props.detail.sname}</Text>
                 </TouchableHighlight>
             </View>
         )
     }
 }
-
 class CharityList extends Component{
     constructor(props){
         super(props);
@@ -73,6 +73,7 @@ class CharityList extends Component{
             lis: [{
                 "id": 0,
                 "name": "",
+                "sname": "",
                 "assets": [
                     {
                         "id": 0,
@@ -82,13 +83,14 @@ class CharityList extends Component{
                     }
                 ]
             }],
-        }
+        }//CreatFuture1495
         var lis = [];
-        console.log("Call CharityAPI");
         fetch('http://api.mehrsaa.ir/v1/list/charity')
             .then((response) => response.json())
             .then((json) => {
+                console.log("200");
                 if(json.meta.code == 200){
+
                     for(var index in json.data){
                         lis.push(json.data[index])
                     }
@@ -96,7 +98,6 @@ class CharityList extends Component{
                     this.setState({
                         lis
                     })
-                    // {detail: json.data[0]};
                 }
                 else{
                     console.log("ERROR");
@@ -150,10 +151,6 @@ class CharityList extends Component{
                 >
                     {this.WholeCharites(this.props , this.ClickOnCharity)}
                 </InvertibleScrollView>
-                {/*<Button*/}
-                {/*onPress={() => this.clickPress()}*/}
-                {/*title={"Click"}*/}
-                {/*/>*/}
             </View>
         )
     }
