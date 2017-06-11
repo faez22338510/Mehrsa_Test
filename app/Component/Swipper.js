@@ -3,7 +3,8 @@ import {
     View,
     Text,
     StyleSheet,
-    Image
+    Image,
+    TouchableHighlight
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
@@ -11,7 +12,43 @@ import Swiper from 'react-native-swiper';
 class LastNews extends Component{
     constructor(props) {
         super(props);
+        this.state = {
+            listofSlider:[],
+        }
+        this.CallApi();
     }
+
+    CallApi(){
+        var url = "http://api.mehrsaa.ir/v1/slider";
+        var lis = [];
+        fetch(url)
+            .then(response => response.json())
+            .then(res => {
+                if(res.meta.code == 200){
+                    for(var index in res.data){
+                        lis.push(res.data[index]);
+                        console.log(res.data[index]);
+                    }
+                    this.setState({
+                        listofSlider: lis,
+                    })
+                }
+            })
+    }
+
+    WholeSliderNews(){
+        var baseURL = "http://api.mehrsaa.ir/v1/";
+        return this.state.listofSlider.map((news) => {
+            //console.log(baseURL+news.assets[0].asset_url);
+            return(
+                <SliderNews
+                    key={news.id}
+                    detail={news}
+                />
+            )
+        })
+    }
+
     render(){
         return(
             <Swiper
@@ -21,24 +58,40 @@ class LastNews extends Component{
                 autoplayTimeout={4}
                 autoplay={true}
             >
-                <View style={styles.slide1}>
-                    <Image source={{uri: "http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2013/10/11/101105860-129311070.1910x1000.jpg"}}
-                           style={styles.Image}/>
-                </View>
-                <View style={styles.slide2}>
-                    <Image source={{uri: "http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2014/10/22/102110883-143276821.1910x1000.jpg"}}
-                           style={styles.Image}/>
-                </View>
-                <View style={styles.slide3}>
-                    <Image source={{uri: "http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2014/12/12/102264730-charity.1910x1000.jpg"}}
-                           style={styles.Image}/>
-                </View>
-                <View style={styles.slide3}>
-                    <Image source={{uri: "http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2015/11/10/103156952-GettyImages-186059084.1910x1000.jpg"}}
-                        style={styles.Image}
-                    />
-                </View>
+                {this.WholeSliderNews()}
             </Swiper>
+        )
+    }
+
+}
+
+class SliderNews extends Component{
+    constructor(props){
+        super(props);
+        this.state={
+            detail: props.detail,
+        }
+    }
+
+    _onPressButton(){
+        alert("go to Slider page" + this.state.detail.id);
+    }
+
+    render(){
+        var baseURL = "http://api.mehrsaa.ir/v1/";
+        var image = baseURL+this.state.detail.assets[0].asset_url;
+        //console.log(image);
+        return(
+            <View
+                style={styles.slide1}
+            >
+                <TouchableHighlight
+                    onPress={this._onPressButton.bind(this)}
+                >
+                        <Image source={{uri: image}}
+                               style={styles.Image}/>
+                </TouchableHighlight>
+            </View>
         )
     }
 
