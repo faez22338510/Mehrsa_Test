@@ -66,6 +66,10 @@ class CharityDetail extends Component{
                 }
             })
     }
+    edit(str){
+        var res = str.replace(/&#13/g, "\r\n");
+        return (res);
+    }
     render(){
         var Baseurl = 'http://api.mehrsaa.ir/v1/';
         return(
@@ -114,7 +118,7 @@ class CharityDetail extends Component{
                 <View style={styles.BodyOfAbout}>
                     <Text
                         style={styles.TextBodyAbout}
-                    >{this.state.detail.about}</Text>
+                    >{this.edit(this.state.detail.about)}</Text>
                 </View>
                 <View style={styles.HeaderOfAboutCharity}>
                     <View style={{flex:1,alignItems: 'center'}}>
@@ -126,7 +130,14 @@ class CharityDetail extends Component{
                 <View style={styles.BodyOfAbout}>
                     <Text
                         style={styles.TextBodyAbout}
-                    >{this.state.detail.description}</Text>
+                    >
+
+
+                        {this.edit(this.state.detail.description)}
+
+
+
+                        </Text>
                 </View>
                 <View style={styles.HeaderOfAboutCharity}>
                     <View style={{flex:1,alignItems: 'center'}}>
