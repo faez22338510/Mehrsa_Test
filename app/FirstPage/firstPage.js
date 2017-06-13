@@ -18,8 +18,10 @@ const drawerStyles = {
 
 import Drawer from 'react-native-drawer';
 import MyControlPanel from '../Drawer/ControlPanel';
+//import IndexPage from '';
 
 var ListOfCharity = require('../Component/CharityList');
+
 var ListOfFieldCharity = require('../Component/FieldList');
 var LastNews = require('../Component/Swipper');
 var ToolBar = require('../Component/ToolBar');
@@ -52,10 +54,16 @@ export default class firstPage extends Component {
     }
 
     onOrgPress(id) {
-        console.log("FirstPage");
         this.props.navigator.push({
             id: 2,
             orgId: id
+        })
+    }
+    ClickSlider(id,image){
+        this.props.navigator.push({
+            id:3,
+            orgId: id,
+            image: image,
         })
     }
 
@@ -107,7 +115,10 @@ export default class firstPage extends Component {
                         />
                     </View>
                     <View>
-                        <LastNews/>
+                        <LastNews
+                            navigate = {this.props.navigator}
+                            SliderPress = {(SliderId,Image) => this.ClickSlider(SliderId,Image)}
+                        />
                     </View>
                     <View
                         style={styles.rows}
