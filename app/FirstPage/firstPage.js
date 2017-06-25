@@ -68,7 +68,10 @@ export default class firstPage extends Component {
     }
 
     onShowCharityListShowPress(listofCharity) {
-
+        this.props.navigator.push({
+            id:6,
+            listofCharity:listofCharity
+        })
     }
 
     openDrawer() {
@@ -138,7 +141,7 @@ export default class firstPage extends Component {
                         onPress={()=>{
                             {/*this.openDrawer();*/}
                          this.props.navigator.push({
-                             id: 4,
+                             id: 5,
                          })
                     }}
                         title="Next Page"
