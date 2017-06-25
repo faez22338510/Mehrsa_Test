@@ -1,6 +1,6 @@
 import React ,{ Component } from 'react';
 // Arabic (ar) selected
-import { FormattedNumber } from 'react-native-globalize';
+
 import {
     AppRegistry,
     StyleSheet,
@@ -15,17 +15,6 @@ import {
     TextInput
 } from 'react-native';
 const Item = Picker.Item;
-const Messages = {
-    en: {
-        hello: 'Hello',
-    },
-    es: {
-        hello: 'Hola',
-    },
-    fa:{
-        hello: 'سلام',
-    }
-};
 class PayPage extends Component{
     constructor(props){
         super(props);
@@ -34,20 +23,41 @@ class PayPage extends Component{
             CharityId: 0,
             color: 'red',
             mode: Picker.MODE_DIALOG,
+            money_show: "",
+            money_pay:0,
         };
     }
 
+    converPersioan(str){
+        let persian = {
+            0: '۰',
+            1: '۱',
+            2: '۲',
+            3: '۳',
+            4: '۴',
+            5: '۵',
+            6: '۶',
+            7: '۷',
+            8: '۸',
+            9: '۹'
+        };
+        alert(str);
+        var num = str.replace(/(\d)(?=(\d{3})+$)/g, ",");
+        var convertToPersianNumber = num.replace(/[0-9]/g, (from) => persian[parseInt(from)]);
+        return convertToPersianNumber;
+    }
+
+
     render(){
         return(
-            <View style={{
-                flex:1,
+            <ScrollView style={{
                 backgroundColor:'#F0F5F8'
             }}>
                 <View
                     style={{
-                    flex: 0.3,
+                    height:200,
                     alignItems: 'stretch'}}>
-                    <Image source={require('../../images/child.jpg')} style={styles.backgroundImage} />
+                    <Image source={require('../../images/child.png')} style={styles.backgroundImage} />
                 </View>
                 <View style={styles.defultMonySection}>
                     <View style={styles.inlineButtonSection}>
@@ -55,40 +65,70 @@ class PayPage extends Component{
                             style={styles.buttonleftMoney}
                         >
                         <Button
-                            title="50,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۵۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۵۰,۰۰۰",
+                                    money_pay:50000
+                                })
+                            }} // TODO
                         />
                         </View>
                         <View style={styles.buttoncenterMoney}>
                         <Button
-                            title="20,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۲۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۲۰,۰۰۰",
+                                    money_pay:20000
+                                })
+                            }} // TODO
                         />
                         </View>
                         <View style={styles.buttonrightMoney}>
                         <Button
-                            title="10,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۱۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۱۰,۰۰۰",
+                                    money_pay:10000
+                                })
+                            }} // TODO
                         />
                         </View>
                     </View>
                     <View style={styles.inlineButtonSection}>
                         <View style={styles.buttonleftMoney}>
                         <Button
-                            title="1,000,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۱,۰۰۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۱,۰۰۰,۰۰۰",
+                                    money_pay:1000000
+                                })
+                            }} // TODO
                         />
                         </View>
                         <View style={styles.buttoncenterMoney}>
                         <Button
-                            title="500,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۵۰۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۵۰۰,۰۰۰",
+                                    money_pay:500000
+                                })
+                            }} // TODO
                         />
                         </View>
                         <View style={styles.buttonrightMoney}>
                         <Button
-                            title="200,000 ریال"
-                            onPress={()=>null} // TODO
+                            title="۲۰۰,۰۰۰ ریال"
+                            onPress={()=>{
+                                this.setState({
+                                    money_show:"۲۰۰,۰۰۰",
+                                    money_pay:200000
+                                })
+                            }} // TODO
                         />
                         </View>
                     </View>
@@ -102,17 +142,26 @@ class PayPage extends Component{
                             paddingTop:8
                         }}>ریال</Text>
                     <TextInput
-                        style={{
+                    style={{
                             height: 40,
                             paddingLeft:10,
                             paddingRight:10,
                             fontSize: 16,
                             flex:9,
                             backgroundColor:"#fff",
+                            textAlign: 'right'
                             }}
-                        underlineColorAndroid="#ffffff"
-                        placeholder="مبلغ دلخواه خود را وارد کنید"
-                    />
+                    onChangeText={(money) => {
+                            var str = this.converPersioan(money);
+                            this.setState({
+                                money_show:str,
+                            })
+                        }}
+
+                    underlineColorAndroid="#ffffff"
+                    placeholder="مبلغ دلخواه خود را وارد کنید"
+                    value={this.state.money_show}
+                />
                 </View>
                 <View style={styles.charitySelectSection}>
                     <View
@@ -169,7 +218,7 @@ class PayPage extends Component{
                         />
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
     onValueChange = (key: string, value: string) => {
@@ -184,7 +233,8 @@ const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
         width: null,
-        height: 100,
+        height: 50,
+        margin:30,
         resizeMode: 'stretch', // or 'stretch' or cover
     },
 
@@ -213,22 +263,26 @@ const styles = StyleSheet.create({
         paddingTop:9
     },
     desiredMonySection:{
-        flex:0.1,
+        height:60,
+        paddingTop:15,
         paddingLeft:12,
         paddingRight:12,
 
         flexDirection: 'row',
     },
     charitySelectSection:{
-        flex:0.1,
+        height:60,
+        paddingTop:5,
         flexDirection: 'row',
         paddingRight: 10,
         paddingLeft:10
     },
     payBtm:{
+
         flexDirection: 'column',
         justifyContent: 'center',
-        flex:0.3
+        height:60,
+        paddingTop:10,
     },
 });
 
