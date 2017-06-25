@@ -136,10 +136,10 @@ export default class firstPage extends Component {
                     </View>
                     <Button
                         onPress={()=>{
-                            this.openDrawer();
-                         {/*this.props.navigator.push({*/}
-                             {/*id: 1,*/}
-                         {/*})*/}
+                            {/*this.openDrawer();*/}
+                         this.props.navigator.push({
+                             id: 4,
+                         })
                     }}
                         title="Next Page"
                     />
