@@ -16,6 +16,11 @@ class LastNews extends Component{
             listofSlider:[],
         }
         this.CallApi();
+        this.ClickSlider = this.ClickSlider.bind(this);
+    }
+
+    ClickSlider(prop,SliderId,image){
+        prop.SliderPress(SliderId,image);
     }
 
     CallApi(){
@@ -36,7 +41,8 @@ class LastNews extends Component{
             })
     }
 
-    WholeSliderNews(){
+    WholeSliderNews(prop,ClickSlider){
+        var property = prop;
         var baseURL = "http://api.mehrsaa.ir/v1/";
         return this.state.listofSlider.map((news) => {
             //console.log(baseURL+news.assets[0].asset_url);
@@ -44,6 +50,8 @@ class LastNews extends Component{
                 <SliderNews
                     key={news.id}
                     detail={news}
+                    image = {news.assets[0].asset_url}
+                    onPress = {(id,image) => ClickSlider(property,id,image)}
                 />
             )
         })
@@ -58,7 +66,7 @@ class LastNews extends Component{
                 autoplayTimeout={4}
                 autoplay={true}
             >
-                {this.WholeSliderNews()}
+                {this.WholeSliderNews(this.props,this.ClickSlider)}
             </Swiper>
         )
     }
@@ -74,7 +82,10 @@ class SliderNews extends Component{
     }
 
     _onPressButton(){
-        alert("go to Slider page" + this.state.detail.id);
+        var baseURL = "http://api.mehrsaa.ir/v1/";
+        var image = baseURL+this.state.detail.assets[0].asset_url;
+       //alert("go to Slider page" + this.state.detail.id);
+        this.props.onPress(this.state.detail.id,image);
     }
 
     render(){
